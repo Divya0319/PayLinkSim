@@ -48,7 +48,7 @@ public class RazorPayGateway implements PaymentGateway {
         JSONObject notes = new JSONObject();
         notes.put("policy_name","Jeevan Bima");
         paymentLinkRequest.put("notes",notes);
-        paymentLinkRequest.put("callback_url","https://divya0319.github.io/");
+        paymentLinkRequest.put("callback_url","http://localhost:8082/payment/paymentCallback");
         paymentLinkRequest.put("callback_method","get");
 
         try {

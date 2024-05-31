@@ -4,11 +4,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.paymentservices.razorPaymentGateway.dto.PaymentLinkRequestDto;
 import com.paymentservices.razorPaymentGateway.models.PaymentDetails;
 import com.paymentservices.razorPaymentGateway.models.PaymentStatus;
+import com.paymentservices.razorPaymentGateway.models.PaymentSuccess;
 import com.paymentservices.razorPaymentGateway.repositories.PaymentRepository;
+import com.paymentservices.razorPaymentGateway.repositories.PaymentSuccessRepository;
 
 @Service
 public class PaymentService {
@@ -17,14 +20,17 @@ public class PaymentService {
 	
 	private PaymentRepository paymentRepository;
 	
+	private PaymentSuccessRepository paymentSuccessRepository;
+	
 	@Autowired
-	public PaymentService(PaymentGateway paymentGateway, PaymentRepository paymentRepository) {
+	public PaymentService(PaymentGateway paymentGateway, PaymentRepository paymentRepository, PaymentSuccessRepository paymentSuccessRepository) {
 		this.paymentGateway = paymentGateway;
 		this.paymentRepository = paymentRepository;
+		this.paymentSuccessRepository = paymentSuccessRepository;
 	}
 
 
-	public String createLink(String orderId) {
+	public String createLink(String orderId, int amount) {
 		/*
         Make a call to order service and get the order details.
         OrderDetail order = restTemplate.getMapping(orderId)
@@ -36,7 +42,7 @@ public class PaymentService {
         paymentLinkRequestDto.setCustomerName("Divya");
         paymentLinkRequestDto.setOrderId(orderId);
         paymentLinkRequestDto.setPhone("7000493027");
-        paymentLinkRequestDto.setAmount(100);
+        paymentLinkRequestDto.setAmount(amount * 100);
 
         // Generate payment link using the payment gateway
         String paymentLink = paymentGateway.createPaymentLink(paymentLinkRequestDto);
@@ -69,5 +75,19 @@ public class PaymentService {
 
         return status;
     }
+	
+	public PaymentSuccess processPaymentSuccess(String paymentId,String paymentLinkId, String paymentLinkReferenceId, 
+			String paymentLinkStatus, String signature) {
+		// Create PaymentSuccess entity
+        PaymentSuccess paymentSuccess = new PaymentSuccess();
+        paymentSuccess.setPaymentId(paymentId);
+        paymentSuccess.setPaymentLinkId(paymentLinkId);
+        paymentSuccess.setPaymentLinkReferenceId(paymentLinkReferenceId);
+        paymentSuccess.setPaymentLinkStatus(paymentLinkStatus);
+        paymentSuccess.setSignature(signature);
+        
+        // Save to the database
+        return paymentSuccessRepository.save(paymentSuccess);
+	}
 
 }
