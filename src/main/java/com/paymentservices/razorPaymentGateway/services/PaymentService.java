@@ -51,6 +51,8 @@ public class PaymentService {
         PaymentDetails paymentResponse = new PaymentDetails();
         paymentResponse.setPaymentLink(paymentLink);
         paymentResponse.setOrderId(orderId);
+        
+        // Note: paymentId is not available at this point, so save PaymentDetails without it initially
         paymentRepository.save(paymentResponse);
 
         return paymentLink;
@@ -70,7 +72,6 @@ public class PaymentService {
         // Update and save payment details with the new status
         PaymentDetails paymentResponse = paymentDetails.get();
         paymentResponse.setStatus(status);
-        paymentResponse.setPaymentId(paymentId);
         paymentRepository.save(paymentResponse);
 
         return status;
@@ -87,7 +88,21 @@ public class PaymentService {
         paymentSuccess.setSignature(signature);
         
         // Save to the database
-        return paymentSuccessRepository.save(paymentSuccess);
+        PaymentSuccess savedPaymentSuccess = paymentSuccessRepository.save(paymentSuccess);
+        
+     // Retrieve the corresponding PaymentDetails entity
+        Optional<PaymentDetails> paymentDetailsOptional = paymentRepository.findByOrderId(paymentLinkReferenceId);
+        
+        if(paymentDetailsOptional.isPresent()) {
+        	PaymentDetails paymentDetails = paymentDetailsOptional.get();
+        	paymentDetails.setPaymentSuccess(savedPaymentSuccess); // Set the bidirectional relationship
+            paymentRepository.save(paymentDetails);  // Update PaymentDetails to reference PaymentSuccess
+        } else {
+        	throw new RuntimeException("PaymentDetails not found for the given orderId");
+        }
+        
+        
+        return savedPaymentSuccess;
 	}
 
 }
