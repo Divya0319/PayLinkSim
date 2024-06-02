@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.paymentservices.razorPaymentGateway.dto.PaymentLinkRequestDto;
 import com.paymentservices.razorPaymentGateway.models.PaymentDetails;
@@ -97,6 +96,9 @@ public class PaymentService {
         	PaymentDetails paymentDetails = paymentDetailsOptional.get();
         	paymentDetails.setPaymentSuccess(savedPaymentSuccess); // Set the bidirectional relationship
             paymentRepository.save(paymentDetails);  // Update PaymentDetails to reference PaymentSuccess
+            
+            savedPaymentSuccess.setPaymentDetails(paymentDetails);
+            savedPaymentSuccess.getPaymentDetails().setPaymentSuccess(null);
         } else {
         	throw new RuntimeException("PaymentDetails not found for the given orderId");
         }
