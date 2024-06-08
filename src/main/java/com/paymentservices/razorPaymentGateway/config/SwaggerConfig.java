@@ -3,7 +3,6 @@ package com.paymentservices.razorPaymentGateway.config;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -28,7 +27,11 @@ public class SwaggerConfig {
     public OpenAPI orderProcessOpenAPI() {
     	return new OpenAPI()
     			.addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
-    			.components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
+    			.components(new Components()
+    					.addSecuritySchemes("bearerAuth", createAPIKeyScheme())
+    					.addSecuritySchemes("RazorPay Key", createRazorPayKeyScheme())
+    					.addSecuritySchemes("RazorPay secret", createRazorPaySecretScheme())
+    					)
     			.info(new Info().title("RazorPay Payment Gateway")
 				.description("For API Learning")
 				.version("1.0.0")
@@ -40,8 +43,24 @@ public class SwaggerConfig {
     
     private SecurityScheme createAPIKeyScheme() {
     	return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+    			.description("JWT auth description")
     			.bearerFormat("JWT")
+    			.in(SecurityScheme.In.HEADER)
     			.scheme("bearer");
+    }
+    
+    private SecurityScheme createRazorPayKeyScheme() {
+    	return new SecurityScheme().type(SecurityScheme.Type.APIKEY)
+    			.in(SecurityScheme.In.HEADER)
+                .name("x-razorpay-key")
+                .description("Razorpay Key");
+    }
+    
+    private SecurityScheme createRazorPaySecretScheme() {
+    	return new SecurityScheme().type(SecurityScheme.Type.APIKEY)
+    			.in(SecurityScheme.In.HEADER)
+                .name("x-razorpay-secret")
+                .description("Razorpay Secret");
     }
 
 }
