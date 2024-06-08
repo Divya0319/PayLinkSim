@@ -12,7 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtUtils {
+public class JwtUtil {
 	
 	private String SECRET_KEY = "secret";
 	
