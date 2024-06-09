@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,15 +28,13 @@ public class SecurityConfig {
 		.authorizeHttpRequests(authorize -> 
 				authorize.requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/payment/paymentCallback").permitAll() // Exclude payment callback endpoint
-				.requestMatchers("/platformpayment/swagger-ui.html",  // Exclude Swagger UI 
-                        "/v2/api-docs",
-                        "/v3/api-docs",
+				.requestMatchers("/platformpayment/swagger-ui/*",  // Exclude Swagger UI 
+                        "/v3/api-docs/*",
                         "/swagger-resources/**",
-                        "/swagger-ui/**",
-                        "/webjars/**",
-                        "/swagger-ui.html").permitAll() 
+                        "/swagger-ui/*",
+                        "/webjars/**").permitAll() 
 				.requestMatchers("/payment/**").authenticated()
-				.anyRequest().permitAll())
+				.anyRequest().authenticated())
 		.exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
