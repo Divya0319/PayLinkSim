@@ -1,5 +1,7 @@
 package com.paymentservices.razorPaymentGateway.config;
 
+import java.util.List;
+
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,7 @@ public class SwaggerConfig {
     					.addSecuritySchemes("RazorPay Key", createRazorPayKeyScheme())
     					.addSecuritySchemes("RazorPay secret", createRazorPaySecretScheme())
     					)
+    			.security(List.of(new SecurityRequirement().addList("bearerAuth")))
     			.info(new Info().title("RazorPay Payment Gateway")
 				.description("For API Learning")
 				.version("1.0.0")
@@ -43,10 +46,12 @@ public class SwaggerConfig {
     
     private SecurityScheme createAPIKeyScheme() {
     	return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+    			.name("Authorization")
     			.description("JWT auth description")
     			.bearerFormat("JWT")
     			.in(SecurityScheme.In.HEADER)
-    			.scheme("bearer");
+    			.scheme("bearer")
+    			;
     }
     
     private SecurityScheme createRazorPayKeyScheme() {
