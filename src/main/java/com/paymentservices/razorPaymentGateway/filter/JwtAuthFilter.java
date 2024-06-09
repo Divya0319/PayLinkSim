@@ -1,6 +1,7 @@
 package com.paymentservices.razorPaymentGateway.filter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +50,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				username = this.jwtHelper.getUsernameFromToken(token);
 			} catch(IllegalArgumentException e) {
 				logger.info("Illegal Argument while fetching the username !!");
-                e.printStackTrace();
+				PrintWriter writer = response.getWriter();
+				writer.println("Illegal Argument while fetching the username !!");
             } catch (ExpiredJwtException e) {
                 logger.info("Given jwt token is expired !!");
-                e.printStackTrace();
+                PrintWriter writer = response.getWriter();
+    			writer.println("Given jwt token is expired !!");
             } catch (MalformedJwtException e) {
-                logger.info("Some changed has done in token !! Invalid Token");
-                e.printStackTrace();
+                logger.info("Some changes has done in token !! Invalid Token");
+                PrintWriter writer = response.getWriter();
+    			writer.println("Some changes has done in token !! Invalid Token");
             } catch (Exception e) {
-                e.printStackTrace();
+            	logger.info("Access Denied !! {}", e.getMessage());
+            	PrintWriter writer = response.getWriter();
+    			writer.println("Access Denied !! "  + e.getMessage());
 
             }
 		} else {
