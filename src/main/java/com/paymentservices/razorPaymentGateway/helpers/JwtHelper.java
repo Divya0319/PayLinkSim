@@ -19,7 +19,7 @@ public class JwtHelper {
 	
 	private String SECRET_KEY = "asasfasfasfasfASAFDADFASDASFADFADFSDFADFAFDFSDFSDFSDFS";
 	
-	private int JWT_TOKEN_VALIDITY = 5;  // in minutes
+	private int JWT_TOKEN_VALIDITY = 1;  // in minutes
 	
 	// retrieve username from token
 	public String getUsernameFromToken(String token) {
@@ -62,7 +62,7 @@ public class JwtHelper {
 				.setClaims(claims)
 				.setSubject(subject)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * JWT_TOKEN_VALIDITY))
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * JWT_TOKEN_VALIDITY)) // 10 minutes
 				.signWith(getSignKey(), SignatureAlgorithm.HS256)
 				.compact();
 	}

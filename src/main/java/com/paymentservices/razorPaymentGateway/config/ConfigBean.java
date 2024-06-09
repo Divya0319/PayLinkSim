@@ -8,7 +8,7 @@ import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 
 @Configuration
-public class PaymentGatewayConfigBean {
+public class ConfigBean {
 
 	@Value("${razorpay.key}")
     private String key;

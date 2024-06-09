@@ -31,8 +31,8 @@ public class SwaggerConfig {
     			.addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
     			.components(new Components()
     					.addSecuritySchemes("bearerAuth", createAPIKeyScheme())   // for JWT Token 
-//    					.addSecuritySchemes("RazorPay Key", createRazorPayKeyScheme())  // for RazorPay key
-//    					.addSecuritySchemes("RazorPay secret", createRazorPaySecretScheme())  // for RazorPay secret
+//    					.addSecuritySchemes("RazorPay Key", createRazorPayKeyScheme())  // for Razorpay key
+//    					.addSecuritySchemes("RazorPay secret", createRazorPaySecretScheme())  // for Razorpay secret
     					)
     			.security(List.of(new SecurityRequirement().addList("bearerAuth")))
     			.info(new Info().title("RazorPay Payment Gateway")
