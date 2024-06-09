@@ -13,12 +13,16 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 class MyConfig {
+	
+	String username = "Divya";
+	String password = "divya";
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails userDetails = User.builder().
-                username("Divya")
-                .password(passwordEncoder().encode("divya")).roles("ADMIN").
-                build();
+                username(username)
+                .password(passwordEncoder().encode(password))
+//                .roles("ADMIN")
+                .build();
         return new InMemoryUserDetailsManager(userDetails);
     }
 

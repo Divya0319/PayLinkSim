@@ -66,23 +66,31 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     			writer.println("Access Denied !! "  + e.getMessage());
 
             }
+		} else if(!requestHeader.startsWith("Bearer")){
+			logger.info("Invalid Header value !!");
+			PrintWriter writer = response.getWriter();
+			writer.println("Invalid Header value !! ");
 		} else {
-			logger.info("Invalid Header value!! ");
+			logger.info("Header cannot be null !!");
+			PrintWriter writer = response.getWriter();
+			writer.println("Header cannot be null !!");
 		}
 		
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			 //fetch user detail from username
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			Boolean validateToken = this.jwtHelper.validateToken(token, userDetails);
+			Boolean isValidToken = this.jwtHelper.validateToken(token, userDetails);
 			
-			if(validateToken) {
+			if(isValidToken) {
 				
 				// set the authentication
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			} else {
-				logger.info("Validation fails !!");
+				logger.info("Validation failed !!");
+				PrintWriter writer = response.getWriter();
+				writer.println("Validation failed !!");
 			}
 			
 			
