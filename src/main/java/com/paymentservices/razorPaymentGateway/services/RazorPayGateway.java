@@ -5,6 +5,7 @@ import java.time.ZoneId;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.paymentservices.razorPaymentGateway.dto.PaymentLinkRequestDto;
@@ -18,6 +19,9 @@ import com.razorpay.RazorpayException;
 public class RazorPayGateway implements PaymentGateway {
 
 	private final RazorpayClient razorpayClient;
+	
+	@Value("${callback.baseUrl}")
+    private String callbackBaseUrl;
 
     @Autowired
     public RazorPayGateway(RazorpayClient razorpayClient) {
@@ -48,8 +52,7 @@ public class RazorPayGateway implements PaymentGateway {
         JSONObject notes = new JSONObject();
         notes.put("policy_name","Jeevan Bima");
         paymentLinkRequest.put("notes",notes);
-        paymentLinkRequest.put("callback_url","http://localhost:8082/payment/paymentCallback");
-//        paymentLinkRequest.put("callback_url","http://razorpay-with-jwt.us-east-2.elasticbeanstalk.com/payment/paymentCallback");
+        paymentLinkRequest.put("callback_url", callbackBaseUrl + "/payment/paymentCallback");
         paymentLinkRequest.put("callback_method","get");
 
         try {
