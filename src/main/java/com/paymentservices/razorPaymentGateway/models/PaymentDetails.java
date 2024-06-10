@@ -1,5 +1,8 @@
 package com.paymentservices.razorPaymentGateway.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,12 +13,13 @@ import jakarta.persistence.OneToOne;
 public class PaymentDetails extends BaseModel {
 
 	private String orderId;
-    private String paymentId;
-    private String PaymentLink;
+    private String paymentLink;
     
+    @JsonInclude(Include.NON_NULL)
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     
+    @JsonInclude(Include.NON_NULL)
     @OneToOne
     @JoinColumn(name = "paymentId", referencedColumnName = "paymentId")
     private PaymentSuccess paymentSuccess;
@@ -28,20 +32,12 @@ public class PaymentDetails extends BaseModel {
 		this.orderId = orderId;
 	}
 	
-	public String getPaymentId() {
-		return paymentId;
-	}
-	
-	public void setPaymentId(String paymentId) {
-		this.paymentId = paymentId;
-	}
-	
 	public String getPaymentLink() {
-		return PaymentLink;
+		return paymentLink;
 	}
 	
 	public void setPaymentLink(String paymentLink) {
-		PaymentLink = paymentLink;
+		this.paymentLink = paymentLink;
 	}
 	
 	public PaymentStatus getStatus() {

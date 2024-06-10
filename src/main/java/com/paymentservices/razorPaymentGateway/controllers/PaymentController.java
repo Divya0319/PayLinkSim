@@ -29,13 +29,13 @@ public class PaymentController {
 		return paymentService.createLink(orderId, amount);
 	}
 	
-	@Hidden
 	@Operation(summary = "It returns whether a payment was success or failure")
 	@GetMapping("/payment/getPaymentStatus")
 	public PaymentStatus getPaymentStatus(@RequestParam("paymentId") String paymentId, @RequestParam("orderId") String orderId) {
 		return paymentService.getPaymentStatus(paymentId, orderId);
 	}
 	
+	@Hidden
 	@Operation(summary = "Used for internal callbacks, not to be used by user")
 	@GetMapping("/payment/paymentCallback")
     public PaymentSuccess handleRazorpayCallback(

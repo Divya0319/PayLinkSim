@@ -70,7 +70,6 @@ public class PaymentService {
         // Update and save payment details with the new status
         PaymentDetails paymentResponse = paymentDetails.get();
         paymentResponse.setStatus(status);
-        paymentResponse.setPaymentId(paymentId);
         paymentRepository.save(paymentResponse);
 
         return status;
