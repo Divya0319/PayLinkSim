@@ -19,7 +19,7 @@ public class JwtHelper {
 	
 	private String SECRET_KEY = "asasfasfasfasfASAFDADFASDASFADFADFSDFADFAFDFSDFSDFSDFS";
 	
-	private int JWT_TOKEN_VALIDITY = 1;  // in minutes
+	private int JWT_TOKEN_VALIDITY = 10 * 60;  // in minutes
 	
 	// retrieve username from token
 	public String getUsernameFromToken(String token) {

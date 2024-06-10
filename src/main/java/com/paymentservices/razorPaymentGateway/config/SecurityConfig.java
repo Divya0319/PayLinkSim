@@ -27,6 +27,7 @@ public class SecurityConfig {
 		.authorizeHttpRequests(authorize -> 
 				authorize.requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/payment/paymentCallback").permitAll() // Exclude payment callback endpoint
+                .requestMatchers("/favicon.ico").permitAll()
 				.requestMatchers("/platformpayment/swagger-ui/*",  // Exclude Swagger UI 
                         "/v2/api-docs/*",
                         "/v3/api-docs/*",

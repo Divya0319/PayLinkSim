@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paymentservices.razorPaymentGateway.helpers.JwtHelper;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -29,6 +31,7 @@ public class AuthenticationController {
 	@Autowired
 	private AuthenticationManager authManager;
 	
+	@Operation(summary = "Generates a unique JWT auth token, valid for 10 hours")
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestParam("username") String username, @RequestParam("password") String password) {
 		this.doAuthenticate(username, password);
