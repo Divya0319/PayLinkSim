@@ -10,6 +10,7 @@ import com.paymentservices.razorPaymentGateway.models.PaymentStatus;
 import com.paymentservices.razorPaymentGateway.models.PaymentSuccess;
 import com.paymentservices.razorPaymentGateway.services.PaymentService;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
@@ -28,6 +29,7 @@ public class PaymentController {
 		return paymentService.createLink(orderId, amount);
 	}
 	
+	@Hidden
 	@Operation(summary = "It returns whether a payment was success or failure")
 	@GetMapping("/payment/getPaymentStatus")
 	public PaymentStatus getPaymentStatus(@RequestParam("paymentId") String paymentId, @RequestParam("orderId") String orderId) {
