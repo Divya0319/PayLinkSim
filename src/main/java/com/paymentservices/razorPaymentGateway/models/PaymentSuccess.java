@@ -2,6 +2,7 @@ package com.paymentservices.razorPaymentGateway.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class PaymentSuccess {
@@ -12,6 +13,9 @@ public class PaymentSuccess {
     private String paymentLinkReferenceId;
     private String paymentLinkStatus;
     private String signature;
+    
+    @OneToOne(mappedBy = "paymentSuccess")
+    private PaymentDetails paymentDetails;
 
    
     public String getPaymentId() {
@@ -53,4 +57,13 @@ public class PaymentSuccess {
     public void setSignature(String signature) {
         this.signature = signature;
     }
+    
+    public PaymentDetails getPaymentDetails() {
+		return paymentDetails;
+	}
+
+	public void setPaymentDetails(PaymentDetails paymentDetails) {
+		this.paymentDetails = paymentDetails;
+	}
+	
 }

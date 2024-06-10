@@ -86,8 +86,25 @@ public class PaymentService {
         paymentSuccess.setPaymentLinkStatus(paymentLinkStatus);
         paymentSuccess.setSignature(signature);
         
-        // Save to the database
-        return paymentSuccessRepository.save(paymentSuccess);
+     // Save to the database
+        PaymentSuccess savedPaymentSuccess = paymentSuccessRepository.save(paymentSuccess);
+        
+     // Retrieve the corresponding PaymentDetails entity
+        Optional<PaymentDetails> paymentDetailsOptional = paymentRepository.findByOrderId(paymentLinkReferenceId);
+        
+        if(paymentDetailsOptional.isPresent()) {
+        	PaymentDetails paymentDetails = paymentDetailsOptional.get();
+        	paymentDetails.setPaymentSuccess(savedPaymentSuccess); // Set the bidirectional relationship
+            paymentRepository.save(paymentDetails);  // Update PaymentDetails to reference PaymentSuccess
+            
+            savedPaymentSuccess.setPaymentDetails(paymentDetails);
+            savedPaymentSuccess.getPaymentDetails().setPaymentSuccess(null);
+        } else {
+        	throw new RuntimeException("PaymentDetails not found for the given orderId");
+        }
+        
+        
+        return savedPaymentSuccess;
 	}
 
 }
