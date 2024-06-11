@@ -41,7 +41,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			"/auth/login",					// Exclude login endpoint
 			"/payment/paymentCallback",		// Exclude callback endpoint
 			"/platformpayment/swagger-ui/",  // Exclude Swagger UI 
-            "/v2/api-docs/",
             "/v3/api-docs/",
             "/swagger-resources/",
             "/webjars/",
