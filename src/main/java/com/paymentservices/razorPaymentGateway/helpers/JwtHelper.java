@@ -36,7 +36,7 @@ public class JwtHelper {
 		return claimsResolver.apply(claims);
 	}
 	
-    //for retrieveing any information from token we will need the secret key
+    //for retrieving any information from token we will need the secret key
 	public Claims getAllClaimsFromToken(String token) {
 	   return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
 	}
