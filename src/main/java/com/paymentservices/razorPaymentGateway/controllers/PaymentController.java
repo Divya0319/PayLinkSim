@@ -23,13 +23,13 @@ public class PaymentController {
 		this.paymentService = paymentService;
 	}
 	
-	@Operation(summary = "It creates the payment link, which we can copy paste in browser.")
+	@Operation(summary = "Creates the payment link, which we can copy-paste in browser.")
 	@PostMapping("/payment/createLink")
 	public String createPaymentLink(@RequestParam String orderId, @RequestParam int amount) {
 		return paymentService.createLink(orderId, amount);
 	}
 	
-	@Operation(summary = "It returns whether a payment was success or failure")
+	@Operation(summary = "Returns whether a payment was success or failure, based on its id")
 	@GetMapping("/payment/getPaymentStatus")
 	public PaymentStatus getPaymentStatus(@RequestParam("paymentId") String paymentId, @RequestParam("orderId") String orderId) {
 		return paymentService.getPaymentStatus(paymentId, orderId);
