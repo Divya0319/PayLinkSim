@@ -12,4 +12,9 @@ public class SwaggerRedirectController {
 		return new RedirectView("/platformpayment/swagger-ui/index.html#");
 	}
 	
+	@GetMapping("/")
+	public RedirectView redirectToSwaggerUIFromRoot() {
+		return new RedirectView("/platformpayment/swagger-ui/index.html#");
+	}
+	
 }

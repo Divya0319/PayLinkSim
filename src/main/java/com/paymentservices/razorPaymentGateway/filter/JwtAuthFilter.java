@@ -54,7 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		
 		String requestUri = request.getRequestURI();
 		
-		if(isExcluded(requestUri)) {
+		if(isExcluded(requestUri) || isExcludedRoot(requestUri)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -129,6 +129,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	
 	private boolean isExcluded(String requestUri) {
 		return EXCLUDED_URLS.stream().anyMatch(excludedUrl -> requestUri.startsWith(excludedUrl));
+	}
+	
+	private boolean isExcludedRoot(String requestUri) {
+		return requestUri.equals("/");
 	}
 	
 	private void handleError(HttpServletResponse response, String message) throws IOException {

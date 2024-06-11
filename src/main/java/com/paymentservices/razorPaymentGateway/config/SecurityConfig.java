@@ -26,6 +26,7 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(authorize -> 
 				authorize.requestMatchers("/auth/login").permitAll()
+				.requestMatchers("/").permitAll()
                 .requestMatchers("/payment/paymentCallback").permitAll() // Exclude payment callback endpoint
 				.requestMatchers("/platformpayment/swagger-ui/*",  // Exclude Swagger UI 
                         "/v3/api-docs/*",
