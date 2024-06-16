@@ -98,8 +98,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		                return;
 		            }
 		        } else {
-		        	logger.info("Header is blank !!");
-					handleError(response, "Header is blank !!");
+		        	logger.info("Invalid Token Scheme !!");
+					handleError(response, "Invalid Token Scheme !!");
 		        }
 			}
 		}

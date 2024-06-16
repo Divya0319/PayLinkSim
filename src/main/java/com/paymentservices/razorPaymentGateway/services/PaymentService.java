@@ -46,6 +46,10 @@ public class PaymentService {
 
         // Generate payment link using the payment gateway
         String paymentLink = paymentGateway.createPaymentLink(paymentLinkRequestDto);
+        
+        if (paymentLink.contains("Failed to create payment link")) {
+            throw new RuntimeException(paymentLink);
+        }
 
         // Save payment details in the repository
         PaymentDetails paymentResponse = new PaymentDetails();
