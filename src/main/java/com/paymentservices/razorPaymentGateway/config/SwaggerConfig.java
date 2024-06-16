@@ -30,7 +30,7 @@ public class SwaggerConfig {
     	return new OpenAPI()
     			.addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
     			.components(new Components()
-    					.addSecuritySchemes("bearerAuth", createAPIKeyScheme())   // for JWT Token 
+    					.addSecuritySchemes("bearerAuth", createJWTAuthScheme())   // for JWT Token 
 //    					.addSecuritySchemes("RazorPay Key", createRazorPayKeyScheme())  // for Razorpay key
 //    					.addSecuritySchemes("RazorPay secret", createRazorPaySecretScheme())  // for Razorpay secret
     					)
@@ -44,13 +44,12 @@ public class SwaggerConfig {
 	            .url("https://springshop.wiki.github.org/docs"));
     }
     
-    private SecurityScheme createAPIKeyScheme() {
-    	return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+    private SecurityScheme createJWTAuthScheme() {
+    	return new SecurityScheme().type(SecurityScheme.Type.APIKEY)  // APIKEY or HTTP(depending on requirement)
     			.name("Authorization")
     			.description("JWT auth description")
-    			.bearerFormat("JWT")
+//    			.bearerFormat("JWT")
     			.in(SecurityScheme.In.HEADER)
-    			.scheme("bearer")
     			;
     }
     
