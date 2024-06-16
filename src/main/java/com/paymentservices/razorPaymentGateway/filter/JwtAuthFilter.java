@@ -74,9 +74,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				handleError(response, "Header is blank !!");
 			} 
 			else {
-				if (requestHeader.startsWith("Bearer ")) {
+				if (requestHeader.startsWith("JWT ")) {
 		            // Extract token after "Bearer " prefix
-		            token = requestHeader.substring(7);
+//		            token = requestHeader.substring(7);
+		            token = requestHeader.substring(4);
 		            
 		            try {
 		                username = this.jwtHelper.getUsernameFromToken(token);
