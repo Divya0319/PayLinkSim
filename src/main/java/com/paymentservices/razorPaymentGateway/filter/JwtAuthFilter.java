@@ -2,7 +2,7 @@ package com.paymentservices.razorPaymentGateway.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.paymentservices.razorPaymentGateway.config.JwtConfig;
 import com.paymentservices.razorPaymentGateway.helpers.JwtHelper;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -34,19 +35,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private JwtConfig jwtConfig;
 	
 	private Logger logger = LoggerFactory.getLogger(OncePerRequestFilter.class);
 	
-	private static final List<String> EXCLUDED_URLS = Arrays.asList(
-			"/auth/login",					// Exclude login endpoint
-			"/payment/paymentCallback",		// Exclude callback endpoint
-			"/platformpayment/swagger-ui/",  // Exclude Swagger UI 
-            "/v3/api-docs/",
-            "/swagger-resources/",
-            "/webjars/",
-            "/swagger-ui/",
-            "/favicon.ico"
-    );
+	private List<String> excludedUrls = new ArrayList<>();
+
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -59,7 +55,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			return;
 		}
 		
-		String requestHeader = request.getHeader("Authorization");
+		String requestHeader = request.getHeader(jwtConfig.getAuthHeaderName());
 		logger.info("Header : {}", requestHeader);
 		String username = null;
 		String token = null;
@@ -129,7 +125,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	}
 	
 	private boolean isExcluded(String requestUri) {
-		return EXCLUDED_URLS.stream().anyMatch(excludedUrl -> requestUri.startsWith(excludedUrl));
+		return excludedUrls.stream().anyMatch(excludedUrl -> requestUri.startsWith(excludedUrl));
 	}
 	
 	private boolean isExcludedRoot(String requestUri) {
@@ -144,5 +140,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         writer.flush();
         writer.close();
     }
+
+	public List<String> getExcludedUrls() {
+		return excludedUrls;
+	}
+
+	public void addExcludedUrl(String url) {
+		this.excludedUrls.add(url);
+	}
 
 }

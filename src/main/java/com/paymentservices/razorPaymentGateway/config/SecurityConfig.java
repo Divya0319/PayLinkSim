@@ -1,5 +1,8 @@
 package com.paymentservices.razorPaymentGateway.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.paymentservices.razorPaymentGateway.filter.JwtAuthFilter;
 import com.paymentservices.razorPaymentGateway.helpers.JwtAuthenticationEntryPoint;
+import com.paymentservices.razorPaymentGateway.helpers.UrlPatternConverter;
 
 @Configuration
 public class SecurityConfig {
@@ -20,29 +24,30 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthFilter authFilter;
 	
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		
-		http.csrf(csrf -> csrf.disable())
-		.authorizeHttpRequests(authorize -> 
-				authorize.requestMatchers("/auth/login").permitAll()
-				.requestMatchers("/").permitAll()
-                .requestMatchers("/payment/paymentCallback").permitAll() // Exclude payment callback endpoint
-				.requestMatchers("/platformpayment/swagger-ui/*",  // Exclude Swagger UI 
-                        "/v3/api-docs/*",
-                        "/swagger-resources/**",
-                        "/swagger-ui/*",
-                        "/webjars/**",
-                        "/favicon.ico").permitAll() 
-				.requestMatchers("/payment/**").authenticated()
-				.anyRequest().authenticated())
-		.exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
-		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		
-		http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
-		return http.build();
-	}
+	@Autowired
+	private JwtConfig jwtConfig;
 	
+	@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorize -> {
+                jwtConfig.getExcludedUrls().forEach(url -> authorize.requestMatchers(url).permitAll());
+                jwtConfig.getAuthenticatedUrls().forEach(url -> authorize.requestMatchers(url).authenticated());
+                authorize.anyRequest().authenticated();
+            })
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        
+        List<String> convertedUrls = new ArrayList<>();
+        convertedUrls.addAll(new UrlPatternConverter().processWildCardUrls(convertedUrls));
+        
+        for(String url : convertedUrls) {
+        	authFilter.addExcludedUrl(url);
+        }
+
+        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 	
 
 }

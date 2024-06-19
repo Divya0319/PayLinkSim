@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.paymentservices.razorPaymentGateway.config.JwtConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,9 +20,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtHelper {
 	
-	private String SECRET_KEY = "asasfasfasfasfASAFDADFASDASFADFADFSDFADFAFDFSDFSDFSDFS";
-	
-	private int JWT_TOKEN_VALIDITY = 1;  // in minutes
+	@Autowired
+	private JwtConfig jwtConfig;
 	
 	// retrieve username from token
 	public String getUsernameFromToken(String token) {
@@ -62,7 +64,7 @@ public class JwtHelper {
 				.setClaims(claims)
 				.setSubject(subject)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * JWT_TOKEN_VALIDITY)) // 10 minutes
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * jwtConfig.getJwtTokenValidityInMin())) 
 				.signWith(getSignKey(), SignatureAlgorithm.HS256)
 				.compact();
 	}
@@ -74,7 +76,7 @@ public class JwtHelper {
     }
 
 	private Key getSignKey() {
-		return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+		return Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes());
 	}
 
 	
