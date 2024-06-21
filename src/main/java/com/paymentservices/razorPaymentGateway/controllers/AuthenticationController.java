@@ -30,8 +30,8 @@ public class AuthenticationController {
 	
 	@Autowired
 	private AuthenticationManager authManager;
-	
-	@Operation(summary = "Generates a unique JWT auth token, valid for 1 min")
+		
+	@Operation(operationId = "generateToken", summary = "Generates a unique JWT auth token, valid for 5 min.")
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestParam("username") String username, @RequestParam("password") String password) {
 		this.doAuthenticate(username, password);

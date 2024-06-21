@@ -12,7 +12,8 @@ public class JwtConfig {
 	private List<String> excludedUrls = new ArrayList<>();
 	private List<String> authenticatedUrls = new ArrayList<>();
 	private String authHeaderName = "Authorization";  // default header name
-	private String requiredTokenPrefix = "Bearer ";
+	private String requiredTokenPrefix = "Bearer ";  // default prefix
+	private boolean rootExcluded = false;
 	
 	public String getSecretKey() {
         return secretKey;
@@ -53,5 +54,21 @@ public class JwtConfig {
     public void setAuthHeaderName(String authHeaderName) {
         this.authHeaderName = authHeaderName;
     }
+
+	public boolean isRootExcluded() {
+		return rootExcluded;
+	}
+
+	public void setRootExcluded(boolean rootExcluded) {
+		this.rootExcluded = rootExcluded;
+	}
+
+	public String getRequiredTokenPrefix() {
+		return requiredTokenPrefix;
+	}
+
+	public void setRequiredTokenPrefix(String requiredTokenPrefix) {
+		this.requiredTokenPrefix = requiredTokenPrefix;
+	}
     
 }

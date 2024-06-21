@@ -70,10 +70,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				handleError(response, "Header is blank !!");
 			} 
 			else {
-				if (requestHeader.startsWith("JWT ")) {
+				if (requestHeader.startsWith(jwtConfig.getRequiredTokenPrefix() + " ")) {
 		            // Extract token after "Bearer " prefix
 //		            token = requestHeader.substring(7);
-		            token = requestHeader.substring(4);
+		            token = requestHeader.substring(jwtConfig.getRequiredTokenPrefix().length() + 1);
 		            
 		            try {
 		                username = this.jwtHelper.getUsernameFromToken(token);
@@ -129,7 +129,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	}
 	
 	private boolean isExcludedRoot(String requestUri) {
-		return requestUri.equals("/");
+		if(requestUri.equals("/")) {
+			return jwtConfig.isRootExcluded();
+		} else {
+			return false;
+		}
 	}
 	
 	private void handleError(HttpServletResponse response, String message) throws IOException {

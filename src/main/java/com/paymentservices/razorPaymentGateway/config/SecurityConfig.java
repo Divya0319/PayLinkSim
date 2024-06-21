@@ -39,10 +39,12 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         
         List<String> convertedUrls = new ArrayList<>();
-        convertedUrls.addAll(new UrlPatternConverter().processWildCardUrls(convertedUrls));
+        convertedUrls.addAll(new UrlPatternConverter().processWildCardUrls(jwtConfig.getExcludedUrls()));
         
         for(String url : convertedUrls) {
-        	authFilter.addExcludedUrl(url);
+        	if(!url.equals("/")) {
+        		authFilter.addExcludedUrl(url);
+        	}
         }
 
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);

@@ -17,14 +17,16 @@ public class AppStartupConfig {
         jwtConfig.setSecretKey("adaafaasfdaadfAPKFSKPHJUGHJUYGGassdsffffKJJHGHGGJJHHGFSASDDSDA");
 
         // Set token validity in minutes
-        jwtConfig.setJwtTokenValidityInMin(2);
+        jwtConfig.setJwtTokenValidityInMin(319);
 
         // Set the custom authorization header name
         jwtConfig.setAuthHeaderName("Authorization");
+        
+        // Set the custom token prefix
+        jwtConfig.setRequiredTokenPrefix("JWT");
 
         // Add excluded URLs
         jwtConfig.addExcludedUrl("/auth/login");
-        jwtConfig.addExcludedUrl("/");
         jwtConfig.addExcludedUrl("/payment/paymentCallback");
         jwtConfig.addExcludedUrl("/platformpayment/swagger-ui/*");
         jwtConfig.addExcludedUrl("/v3/api-docs/*");
@@ -32,6 +34,7 @@ public class AppStartupConfig {
         jwtConfig.addExcludedUrl("/swagger-ui/*");
         jwtConfig.addExcludedUrl("/webjars/**");
         jwtConfig.addExcludedUrl("/favicon.ico");
+        jwtConfig.setRootExcluded(true);
 
         // Add authenticated URLs
         jwtConfig.addAuthenticatedUrl("/payment/**");
