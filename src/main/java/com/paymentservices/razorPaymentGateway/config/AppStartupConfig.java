@@ -26,6 +26,7 @@ public class AppStartupConfig {
         jwtConfig.setRequiredTokenPrefix("JWT");
 
         // Add excluded URLs
+        jwtConfig.addExcludedUrl("/");
         jwtConfig.addExcludedUrl("/auth/login");
         jwtConfig.addExcludedUrl("/payment/paymentCallback");
         jwtConfig.addExcludedUrl("/platformpayment/swagger-ui/*");

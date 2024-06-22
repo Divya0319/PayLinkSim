@@ -9,8 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +18,6 @@ import com.paymentservices.razorPaymentGateway.helpers.JwtHelper;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthenticationController {
 	
 	@Autowired
@@ -31,8 +29,8 @@ public class AuthenticationController {
 	@Autowired
 	private AuthenticationManager authManager;
 		
-	@Operation(operationId = "generateToken", summary = "Generates a unique JWT auth token, valid for 5 min.")
-	@PostMapping("/login")
+	@Operation(operationId = "generateToken", summary = "This will be replaced dynamically")
+    @GetMapping("/auth/login")
 	public ResponseEntity<String> login(@RequestParam("username") String username, @RequestParam("password") String password) {
 		this.doAuthenticate(username, password);
 		
