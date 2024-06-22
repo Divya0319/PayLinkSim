@@ -17,7 +17,7 @@ public class AppStartupConfig {
         jwtConfig.setSecretKey("adaafaasfdaadfAPKFSKPHJUGHJUYGGassdsffffKJJHGHGGJJHHGFSASDDSDA");
 
         // Set token validity in minutes
-        jwtConfig.setJwtTokenValidityInMin(319);
+        jwtConfig.setJwtTokenValidityInMin(10 * 60);
 
         // Set the custom authorization header name
         jwtConfig.setAuthHeaderName("Authorization");

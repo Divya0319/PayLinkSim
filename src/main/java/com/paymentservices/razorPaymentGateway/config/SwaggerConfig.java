@@ -70,7 +70,13 @@ public class SwaggerConfig {
                             if (validityInMin > 59) {
                                 int hours = validityInMin / 60;
                                 int mins = validityInMin % 60;
-                                summary = "Generates a unique JWT auth token, valid for " + hours + " hrs " + mins + " mins";
+                                
+                                if(mins == 0) {
+                                	summary = "Generates a unique JWT auth token, valid for " + hours + " hrs ";
+                                }
+                                else {
+                                	summary = "Generates a unique JWT auth token, valid for " + hours + " hrs " + mins + " mins";
+                                }
                             }
                             logger.info("Updating summary for generateToken: {}", summary);
                             operation.setSummary(summary);
