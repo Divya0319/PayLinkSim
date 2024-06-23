@@ -17,7 +17,7 @@ public class AppStartupConfig {
 
     @Bean
     public JwtConfig configureJwtParameters() {
-        // Set the secret key
+        // Set the secret key (should be kept as long as possible, it makes the generated token string longer)
         jwtConfig.setSecretKey("adaafaasfdaadfAPKFSKPHJUGHJUYGGassdsffffKJJHGHGGJJHHGFSASDDSDA");
 
         // Set token validity in minutes
