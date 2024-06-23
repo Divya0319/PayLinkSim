@@ -1,6 +1,7 @@
 package com.paymentservices.razorPaymentGateway.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +11,9 @@ public class AppStartupConfig {
 	
 	@Autowired
     private JwtConfig jwtConfig;
+	
+	@Value("${jwt.token.validity}")
+	private int jwtTokenValidityInMin;
 
     @Bean
     public JwtConfig configureJwtParameters() {
@@ -17,7 +21,8 @@ public class AppStartupConfig {
         jwtConfig.setSecretKey("adaafaasfdaadfAPKFSKPHJUGHJUYGGassdsffffKJJHGHGGJJHHGFSASDDSDA");
 
         // Set token validity in minutes
-        jwtConfig.setJwtTokenValidityInMin(10 * 60);
+//        jwtConfig.setJwtTokenValidityInMin(10 * 60);
+        jwtConfig.setJwtTokenValidityInMin(jwtTokenValidityInMin);
 
         // Set the custom authorization header name
         jwtConfig.setAuthHeaderName("Authorization");
