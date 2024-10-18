@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.paymentservices</groupId>
-	<artifactId>razorPaymentGateway</artifactId>
+	<artifactId>PayLinkSim</artifactId>
 	<version>1.0.0</version>
-	<name>razor-payment-gateway</name>
+	<name>PayLinkSim</name>
 	<description>Payment Integration with Razorpay</description>
 	<properties>
 		<java.version>17</java.version>
